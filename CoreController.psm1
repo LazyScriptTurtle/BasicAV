@@ -37,15 +37,23 @@ function Start-BasicAV {
     Import-BasicAVConfig -Path ".\config.json"
     sleep -Seconds 1
     Write-Host "Validate Configuration ..." -ForegroundColor Cyan
-   # Configuration-Validate
+    # Configuration-Validate
     sleep -Seconds 1
     Write-Host "Configure Quarantine Folder ..." -ForegroundColor Cyan
-    if ($CheckPriv -ne $true)
-    {
+    if ($CheckPriv -ne $true) {
         Write-Host "[-] Insufficient permissions, please run the program again as Administrator " -ForegroundColor Red
         exit
-    }else {
+    }
+    else {
         New-QuarantineFolder -Path ".\Quarantine"
+        $TestQuarantine = powershell.exe -Command ".\Quarantine\skrypt.ps1" 2>&1
+        if ( $TestQuarantine -match "Access is denied") {
+            Write-Host " [+] Quarantine has been configured correctly " -ForegroundColor Green
+        }
+        else {
+            Write-Host "[-] Quarantine was not configured correctly " -ForegroundColor Red
+            exit
+        }
         sleep -Seconds 1
     }
     Write-Host ""
