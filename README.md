@@ -1,59 +1,58 @@
 # 🛡️ BasicAV – PowerShell Antivirus & Honeypot
 
-**BasicAV** to modularny, lokalny system bezpieczeństwa hosta stworzony w całości w PowerShell.
-Projekt łączy funkcjonalność antywirusa, honeypota oraz lekkiego EDR,
-opierając się na natywnych możliwościach systemu Windows – bez potrzeby instalowania zewnętrznych narzędzi.
+**BasicAV** is a modular, local host security system primarily written in PowerShell, with selected modules implemented in C for performance and low-level integration.  
+The project combines antivirus, honeypot, and lightweight EDR (Endpoint Detection and Response) capabilities by leveraging native Windows features—without requiring any third-party tools.
 
 ---
 
-## 🎯 Cel projektu
+## 🎯 Project Goals
 
-- Zapewnienie lokalnej ochrony systemu Windows przy użyciu PowerShell
-- Detekcja złośliwych plików, nieautoryzowanej aktywności i skanowania portów
-- Implementacja pasywnych honeypotów portowych (na podstawie Windows Firewall)
-- Implementacja honeypotów plikowych (pułapki dla malware i intruzów)
-- Możliwość integracji z systemami logowania i alertowania
-
----
-
-## ✅ Aktualny stan
-
-- ✅ Opracowana struktura katalogów projektu
-- ✅ Załadowanie i walidacja pliku `config.json` z ekspansją zmiennych środowiskowych
-- ✅ Funkcja sprawdzająca uprawnienia administratora
-- ✅ Automatyczny import wszystkich modułów z folderu `Modules`
-- ✅ Wstępna struktura funkcji `Start-BasicAV`
-- ✅ Podstawowe komunikaty systemowe i szkielet menu interaktywnego
+- Provide local Windows protection using native PowerShell and C-based modules  
+- Detect malicious files, unauthorized system activity, and port scanning attempts  
+- Implement passive port honeypots (via Windows Firewall)  
+- Implement file-based honeypots (traps for malware and intruders)  
+- Allow integration with logging and alerting systems  
 
 ---
 
-## 🛠️ W planach
+## ✅ Current Status
 
-- [ ] Dodanie silnika skanowania plików i hashów
-- [ ] Budowa modułu honeypota portowego
-- [ ] Budowa honeypota plikowego z monitorowaniem dostępu
-- [ ] System logowania i alertów
-- [ ] Wykrywanie w logach zdefiniowanych wcześniej ataków
-- [ ] Moduł EDR (zbieranie procesów i zdarzeń)
-- [ ] Panel CLI do zarządzania systemem
-- [ ] Integracja z systemami zewnętrznymi (SMTP, Syslog, itp.)
+- ✅ Project directory structure developed  
+- ✅ Loading and validation of `config.json` with environment variable expansion  
+- ✅ Function to verify administrator privileges  
+- ✅ Automatic import of all modules from the `Modules` folder  
+- ✅ Initial structure of `Start-BasicAV` function  
+- ✅ Basic system messages and interactive menu skeleton  
 
 ---
 
-## 📋 Wymagania
+## 🛠️ Planned Features
 
-- Windows 10 / 11 / Server
-- PowerShell 5.1+
-- Uprawnienia administratora
+- File and hash scanning engine  
+- Port honeypot module  
+- File honeypot with access monitoring  
+- Centralized logging and alerting system  
+- Detection of predefined attack signatures in logs  
+- EDR module (process and event collection)  
+- CLI panel for system management  
+- Integration with external services (SMTP, Syslog, etc.)  
 
 ---
 
-## 📄 Licencja
+## 📋 Requirements
 
-Projekt open-source – licencja MIT.
+- Windows 10 / 11 / Server  
+- PowerShell 5.1 or newer  
+- Administrator privileges  
 
 ---
 
-## ✍️ Autor
+## 📄 License
 
-Projekt tworzony z pasji do bezpieczeństwa i PowerShella przez [LazyScriptTurtle].
+This is an open-source project licensed under the MIT License.
+
+---
+
+## ✍️ Author
+
+Developed out of passion for cybersecurity and PowerShell by **[LazyScriptTurtle]**.
