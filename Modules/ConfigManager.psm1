@@ -29,6 +29,7 @@ function Import-BasicAVConfig {
         $config.FileHoneypot.TargetFolders = Expand-EnvInArray $config.FileHoneypot.TargetFolders
     }
     Write-Host "[+] Configuration loaded correctly " -ForegroundColor Green
+    return $config
 }
 
 function Test-Administrator  
