@@ -36,7 +36,7 @@ function Start-BasicAV {
     Start-Sleep -Seconds 1
 
     Write-Host "Importing configuration ..." -ForegroundColor Cyan
-    $Config = Import-BasicAVConfig -Path ".\config.json"
+    $Global:Config = Import-BasicAVConfig -Path ".\config.json"
     if (-not $Config) {
         Write-Host "[-] Configuration import failed." -ForegroundColor Red
         exit
