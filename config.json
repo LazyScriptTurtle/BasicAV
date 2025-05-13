@@ -2,89 +2,33 @@
     "General": {
       "LogLevel": "Info",
       "Language": "PL",
-      "QuarantinePath": "C:\\BasicAV\\Quarantine", 
-      "SignatureDB": "C:\\BasicAV\\Signatures\\signatures.json"
+      "QuarantinePath": ".\\Quarantine"
+      
     },
-  
-    "ScanSettings": {
-      "PathsToScan": [
-        "C:\\Users\\Public",
-        "C:\\ProgramData"
-      ],
-      "ExcludeExtensions": [
-        ".txt",
-        ".log",
-        ".jpg",
-        ".png"
-      ],
-      "RecurseSubfolders": true,
-      "MaxFileSizeMB": 100,
-      "EnableHeuristics": true
-    },
-  
-    "RealTimeMonitor": {
-      "Enable": true,
-      "WatchedPaths": [
-        "C:\\Users\\%USERNAME%\\AppData\\Roaming",
-        "C:\\Users\\%USERNAME%\\Desktop"
-      ],
-      "IncludeSubfolders": true
-    },
-  
-    "Quarantine": {
-      "Enable": true,
-      "AutoDeleteAfterDays": 30
-    },
-  
-    "EDR": {
-      "Enable": true,
-      "LogProcessStart": true,
-      "LogScriptExecution": true,
-      "ExportFormat": "JSON",
-      "LogDirectory": "C:\\BasicAV\\Logs\\EDR"
-    },
-  
-    "Logger": {
-      "LogToFile": true,
-      "LogPath": "C:\\BasicAV\\Logs\\activity_log.json",
-      "IncludeTimestamps": true
-    },
-  
-    "AlertEngine": {
-      "EnableEmail": false,
-      "SMTPServer": "smtp.example.com",
-      "SMTPPort": 587,
-      "EmailFrom": "basicav@example.com",
-      "EmailTo": "admin@example.com",
-      "EnableSyslog": false,
-      "SyslogServer": "192.168.1.10",
-      "SyslogPort": 514
-    },
-  
-    "Honeypot": {
-      "Enabled": true,
-      "CheckIntervalMinutes": 10,
-      "CustomExcludedPorts": [80, 443, 3389],
-      "LogFile": "C:\\BasicAV\\Logs\\firewall_honeypot.log",
-      "AlertOnMatch": true
-    },
-  
+ 
     "FileHoneypot": {
       "Enabled": true,
       "TargetFolders": [
-        "%USERPROFILE%\\Pictures",
-        "%USERPROFILE%\\Documents",
-        "%USERPROFILE%\\Downloads"
+      "C:\\Windows\\System32\\drivers\\etc",
+      "C:\\Program Files\\Common Files",
+      "C:\\Users\\Public\\Documents",
+      "C:\\Temp\\",
+      "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs",
+      "C:\\Users\\%USERNAME%\\AppData\\Roaming",
+      "C:\\Users\\%USERNAME%\\Downloads",
+      "%USERPROFILE%\\Documents",
+      "%USERPROFILE%\\Desktop",
+      "C:\\Windows\\Temp"
       ],
       "FileTemplates": [
         "hasla.txt",
         "login_bankowy.xlsx",
         "karta_kredytowa.docx",
         "secrets.zip"
-      ],
-      "MonitorAccess": true,
-      "AlertOnAccess": true,
-      "HashTracking": true
+      ]
     }
   }
+
+
+
   
