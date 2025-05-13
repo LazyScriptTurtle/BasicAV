@@ -1,49 +1,98 @@
 function New-QuarantineFolder {
     param (
-        [string]$Path = "C:\Quarantine"
+        [string]$Path
     )
 
-
-    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "This script must be run as Administrator."
-        return
-    }
-
-
-    if (-Not (Test-Path $Path)) {
-        New-Item -ItemType Directory -Path $Path -Force | Out-Null
-        Write-Host "[!] Quarantine folder not found - created: $Path" -ForegroundColor Yellow
-    } else {
-        Write-Host "[+] Quarantine folder already exists: $Path" -ForegroundColor Green
+    if (-not (Test-Path $Path)) {
+        Write-Host "[-] Quarantine folder not found at '$Path'." -ForegroundColor Red
+        return $false
     }
 
     try {
-
-        icacls $Path /reset
-        icacls $Path /inheritance:r
-
-
-        icacls $Path /remove:g *S-1-1-0
-
-
-        icacls $Path /grant:r "Administrators:(OI)(CI)(R,W,D)"
-
-
-        icacls $Path /deny "Administrators:(OI)(CI)(X)"
-
-
+        $owner = New-Object System.Security.Principal.NTAccount("SYSTEM")
         $acl = Get-Acl -Path $Path
+        $acl.SetOwner($owner)
+        Write-Host "[+] Owner set to SYSTEM." -ForegroundColor Green
+
+        $acl.Access | ForEach-Object {
+            $acl.RemoveAccessRule($_)
+        }
+        Write-Host "[+] Existing ACL rules removed." -ForegroundColor Green
+
         $adminSid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-544")
-        $acl.SetOwner($adminSid)
+        $adminGroup = $adminSid.Translate([System.Security.Principal.NTAccount])
+        Write-Host "[+] Admin group identified: $adminGroup." -ForegroundColor Green
+
+        $adminWriteOnlyRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+            $adminGroup,
+            "Write",
+            "ContainerInherit,ObjectInherit",
+            "None",
+            "Allow"
+        )
+        $acl.AddAccessRule($adminWriteOnlyRule)
+        Write-Host "[+] Write permission added for $adminGroup." -ForegroundColor Green
+
+        $denyReadRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+            $adminGroup,
+            "Read,ReadAndExecute,Delete",
+            "ContainerInherit,ObjectInherit",
+            "None",
+            "Deny"
+        )
+        $acl.AddAccessRule($denyReadRule)
+        Write-Host "[+] Deny permission added for $adminGroup (Read, Execute, Delete)." -ForegroundColor Green
+
+        $acl.AddAccessRule((
+            New-Object System.Security.AccessControl.FileSystemAccessRule(
+                "SYSTEM",
+                "FullControl",
+                "ContainerInherit,ObjectInherit",
+                "None",
+                "Allow"
+            )
+        ))
+        Write-Host "[+] Full control permission added for SYSTEM." -ForegroundColor Green
+
         Set-Acl -Path $Path -AclObject $acl
 
-        Write-Host "[+] Quarantine folder secured: access restricted, execution denied, ownership set." -ForegroundColor Green
+        Write-Host "[+] ACLs have been successfully applied to the quarantine folder." -ForegroundColor Green
+        return $true
+    }
+    catch {
+        Write-Host "[-] ACL setting error: $_" -ForegroundColor Red
+        return $false
+    }
+}
 
 
-        Write-Host "[*] Effective folder permissions:" -ForegroundColor Yellow
-        Get-Acl $Path | Format-List
 
-    } catch {
-        Write-Host "[-] Error while applying permissions: $_"
+    
+
+function Test-Quarantine {
+    param (
+        [string]$Path
+    )
+
+    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+        return $false
+    }
+
+    $TestFile = Join-Path -Path $Path -ChildPath "test_quarantine.txt"
+
+    try {
+        # Tworzenie pliku testowego
+        "test" | Out-File -Encoding UTF8 -FilePath $TestFile -ErrorAction Stop
+
+        # Próba odczytu
+        $null = Get-Content $TestFile -ErrorAction Stop
+
+        # Jeśli odczyt się udał — test nie zaliczony
+        Remove-Item -Path $TestFile -Force -ErrorAction SilentlyContinue
+        return $false
+    }
+    catch {
+        # Odczyt nieudany — test zaliczony
+        return $true
     }
 }
