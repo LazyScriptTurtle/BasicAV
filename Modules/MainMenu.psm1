@@ -32,15 +32,16 @@ function Get-MainMenu {
                 Pause
             }
                 
-                
             }
     
             2 {
 
+
             }
     
             3 {
-
+                $Scan = Get-FastScan -Path $($Global:Config.Scan.Custom)
+                $Scan | Out-File -FilePath "..\Custom_Scan.txt"
             }
     
             4 {
