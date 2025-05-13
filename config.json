@@ -1,14 +1,38 @@
 {
-    "General": {
-      "LogLevel": "Info",
-      "Language": "PL",
-      "QuarantinePath": ".\\Quarantine"
-      
-    },
- 
-    "FileHoneypot": {
-      "Enabled": true,
-      "TargetFolders": [
+  "General": {
+    "LogLevel": "Info",
+    "Language": "PL",
+    "QuarantinePath": ".\\Quarantine"
+  },
+  "Scan": {
+    "Custom": [
+    "C:\\Windows\\Temp",
+    "C:\\Users\\%USERNAME%\\AppData\\Local\\Temp",
+    "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
+    "C:\\Users\\%USERNAME%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
+    "C:\\Windows\\System32",
+    "C:\\Windows\\SysWOW64",
+    "C:\\Program Files",
+    "C:\\Program Files (x86)",
+    "C:\\Users\\%USERNAME%\\AppData\\Roaming",
+    "C:\\Users\\%USERNAME%\\AppData\\Local",
+    "C:\\Users\\%USERNAME%\\Downloads",
+    "C:\\Users\\%USERNAME%\\Documents",
+    "C:\\Users\\%USERNAME%\\Desktop",
+    "C:\\$Recycle.Bin",
+    "C:\\System Volume Information",
+    "C:\\Windows\\Prefetch",
+    "C:\\Windows\\Logs",
+    "C:\\Users\\Public",
+    "C:\\Users\\Default",
+    "C:\\Windows\\Tasks",
+    "C:\\Windows\\System32\\Tasks"
+    ]
+  },
+
+  "FileHoneypot": {
+    "Enabled": true,
+    "TargetFolders": [
       "C:\\Windows\\System32\\drivers\\etc",
       "C:\\Program Files\\Common Files",
       "C:\\Users\\Public\\Documents",
@@ -19,16 +43,12 @@
       "%USERPROFILE%\\Documents",
       "%USERPROFILE%\\Desktop",
       "C:\\Windows\\Temp"
-      ],
-      "FileTemplates": [
-        "hasla.txt",
-        "login_bankowy.xlsx",
-        "karta_kredytowa.docx",
-        "secrets.zip"
-      ]
-    }
+    ],
+    "FileTemplates": [
+      "hasla.txt",
+      "login_bankowy.xlsx",
+      "karta_kredytowa.docx",
+      "secrets.zip"
+    ]
   }
-
-
-
-  
+}
