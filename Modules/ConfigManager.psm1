@@ -1,6 +1,6 @@
 function Import-BasicAVConfig {
     param (
-        [string]$Path
+        [string]$Path = ".\config.json"
     )
 
     if (-Not (Test-Path -Path $Path)) {
@@ -16,21 +16,30 @@ function Import-BasicAVConfig {
         return $null
     }
 
-
     function Expand-EnvInArray($array) {
-        return $array | ForEach-Object { [Environment]::ExpandEnvironmentVariables($_) }
+        return $array | ForEach-Object {
+            $expanded = ($_ -replace '\$env:([a-zA-Z_][a-zA-Z0-9_]*)', {
+                param($match)
+                [Environment]::GetEnvironmentVariable($match.Groups[1].Value)
+            })
+
+            [Environment]::ExpandEnvironmentVariables($expanded)
+        }
     }
 
-
-    if ($config.RealTimeMonitor.WatchedPaths) {
-        $config.RealTimeMonitor.WatchedPaths = Expand-EnvInArray $config.RealTimeMonitor.WatchedPaths
-    }
     if ($config.FileHoneypot.TargetFolders) {
         $config.FileHoneypot.TargetFolders = Expand-EnvInArray $config.FileHoneypot.TargetFolders
     }
-    Write-Host "[+] Configuration loaded correctly " -ForegroundColor Green
+    if ($config.Scan.Custom) {
+        $config.Scan.Custom = Expand-EnvInArray $config.Scan.Custom
+    }
+
+    Write-Host "[+] Configuration loaded correctly" -ForegroundColor Green
     return $config
 }
+
+
+
 
 function Test-Administrator  
 {  
